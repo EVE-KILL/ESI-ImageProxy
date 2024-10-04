@@ -68,7 +68,6 @@ func HandleRequest(proxy *httputil.ReverseProxy, cache *helpers.Cache) http.Hand
 
 		// Check if the optimized image is in the cache
 		if _, found := cache.Get(preferredCacheKey); found {
-			log.Printf("Cache HIT for %s (%s)", r.URL.Path, preferredFormat)
 			helpers.ServeOptimizedImage(w, r, cache, cacheKey)
 			return
 		}
@@ -85,7 +84,6 @@ func HandleRequest(proxy *httputil.ReverseProxy, cache *helpers.Cache) http.Hand
 
 		// Check if the response status is OK
 		if recorder.status != http.StatusOK {
-			http.Error(w, "Failed to fetch image", recorder.status)
 			return
 		}
 

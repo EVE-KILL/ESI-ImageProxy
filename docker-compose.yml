@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  esi-proxy:
+    image: ghcr.io/eve-kill/esi-imageproxy:latest
+    ports:
+      - "9501:9501"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    driver: bridge

@@ -10,7 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/chai2010/webp"
+	"github.com/kolesa-team/go-webp/encoder"
+	"github.com/kolesa-team/go-webp/webp"
 )
 
 // CacheOptimizedImages optimizes and caches images in WebP, PNG, and JPEG formats.
@@ -19,7 +20,10 @@ func CacheOptimizedImages(cache *Cache, cacheKey string, img image.Image, header
 
 	// Optimize and cache WebP
 	webpBuffer := new(bytes.Buffer)
-	if err := webp.Encode(webpBuffer, img, &webp.Options{Lossless: false, Quality: 80}); err != nil {
+	options, err := encoder.NewLossyEncoderOptions(encoder.PresetDefault, 80)
+	if err != nil {
+		log.Printf("Error creating WebP encoder options: %v", err)
+	} else if err := webp.Encode(webpBuffer, img, options); err != nil {
 		log.Printf("Error encoding WebP: %v", err)
 	} else {
 		cache.Set(cacheKey+"-webp", CacheItem{
