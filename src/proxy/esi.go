@@ -51,7 +51,8 @@ func NewProxy(targetURL *url.URL, cache *helpers.Cache) *httputil.ReverseProxy {
 // HandleRequest processes incoming requests, handles caching, and serves optimized images.
 func HandleRequest(proxy *httputil.ReverseProxy, cache *helpers.Cache) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cacheKey := helpers.GenerateCacheKey(r.URL.Path)
+		// Include query parameters in the cache key
+		cacheKey := helpers.GenerateCacheKey(r.URL.Path, r.URL.RawQuery)
 
 		// Determine preferred format based on Accept header
 		acceptHeader := r.Header.Get("Accept")
